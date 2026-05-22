@@ -15,24 +15,44 @@ workspace "Luna"
             "%{prj.name}/Source/**.h",
             "%{prj.name}/Source/**.cpp",
             "%{prj.name}/Source/Luna/**.h",
-            "%{prj.name}/Source/Luna/**.cpp"
+            "%{prj.name}/Source/Luna/**.cpp",
+            "Luna/Vendor/imgui/*.cpp"
+        }
+
+        includedirs
+        {
+            "Luna/Vendor/glfw/include",
+            "Luna/Vendor/metal-cpp",
+            "Luna/Vendor/imgui",
+            "Luna/Vendor/spdlog/include",
+            "Luna/Vendor/glm"
+        }
+
+        links
+        {
+            "Luna/Vendor/glfw/lib/libglfw3.a",
+            "Metal.framework",
+            "MetalKit.framework",
+            "Cocoa.framework",
+            "QuartzCore.framework",
+            "Foundation.framework"
         }
 
         filter "system:macos"
             defines "LUNA_PLATFORM_MACOS"
             systemversion "latest"
 
-        filter "configurations:Debug"
-            defines "LUNA_DEBUG"
-            symbols "On"
+            filter "configurations:Debug"
+                defines "LUNA_DEBUG"
+                symbols "On"
 
-        filter "configurations:Release"
-            defines "LUNA_RELEASE"
-            optimize "On"
+            filter "configurations:Release"
+                defines "LUNA_RELEASE"
+                optimize "On"
 
-        filter "configurations:Dist"
-            defines "LUNA_DIST"
-            optimize "On"
+            filter "configurations:Dist"
+                defines "LUNA_DIST"
+                optimize "On"
 
     project "LunaEditor"
         location "LunaEditor"
@@ -62,14 +82,14 @@ workspace "Luna"
             defines "LUNA_PLATFORM_MACOS"
             systemversion "latest"
 
-        filter "configurations:Debug"
-            defines "LUNA_DEBUG"
-            symbols "On"
+            filter "configurations:Debug"
+                defines "LUNA_DEBUG"
+                symbols "On"
 
-        filter "configurations:Release"
-            defines "LUNA_RELEASE"
-            optimize "On"
+            filter "configurations:Release"
+                defines "LUNA_RELEASE"
+                optimize "On"
 
-        filter "configurations:Dist"
-            defines "LUNA_DIST"
-            optimize "On"
+            filter "configurations:Dist"
+                defines "LUNA_DIST"
+                optimize "On"

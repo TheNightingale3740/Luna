@@ -1,0 +1,10 @@
+[submodule "Luna/Vendor/glm"]
+	path = Luna/Vendor/glm
+	url = https://github.com/g-truc/glm
+[submodule "Luna/Vendor/imgui"]
+	path = Luna/Vendor/imgui
+	url = https://github.com/ocornut/imgui
+	branch = docking
+[submodule "Luna/Vendor/spdlog"]
+	path = Luna/Vendor/spdlog
+	url = https://github.com/gabime/spdlog

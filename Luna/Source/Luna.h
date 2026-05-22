@@ -1,10 +1,10 @@
-#include <print>
+#include <iostream>
 #include "Luna/Application.h"
 
 namespace Luna
 {
     void Greet()
     {
-        std::println("Hello from Luna!");
+        std::cout << "Hello from Luna!" << std::endl;
     }
 }
