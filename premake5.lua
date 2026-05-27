@@ -74,7 +74,8 @@ workspace "Luna"
         includedirs
         {
             "Luna/Source",
-            "Luna/Vendor/glfw/include"
+            "Luna/Vendor/glfw/include",
+            "Luna/Vendor/glm"
         }
 
         libdirs

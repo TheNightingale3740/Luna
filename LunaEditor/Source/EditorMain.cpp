@@ -1,5 +1,33 @@
 #include <Luna.h>
 
+class EditorLayer : public Luna::Layer
+{
+public:
+    EditorLayer()
+        : Layer()
+    {}
+    
+    ~EditorLayer()
+    {}
+
+    void OnAttach() override
+    {
+    }
+
+    void OnDetach() override
+    {
+    }
+
+    void OnUpdate(float ts) override
+    {
+
+    }
+
+    void OnUIRender() override
+    {
+    }
+};
+
 Luna::Application* Luna::CreateApplication()
 {
     Luna::ApplicationSpecification spec;
@@ -9,5 +37,7 @@ Luna::Application* Luna::CreateApplication()
     spec.WindowSpec.Height = 720;
 
     Luna::Application *app = new Luna::Application(spec);
+    app->PushLayer<EditorLayer>();
+
     return app;
 }

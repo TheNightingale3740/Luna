@@ -2,23 +2,29 @@
 
 namespace Luna
 {
+    static Application *s_Application = nullptr;
+
     Application::Application(const ApplicationSpecification& specification)
-        : m_Specification(specification), m_Window(specification.WindowSpec)
+        : m_Specification(specification)
     {
-        glfwInit();
+        s_Application = this;
         
-        m_Window.Create();
+        glfwInit();
+
+        m_Window = std::make_shared<Window>(specification.WindowSpec);
+        m_Window->Create();
     }
 
     Application::~Application()
     {
+        s_Application = nullptr;
         glfwTerminate();
     }
 
     void Application::Run()
     {
         Init();
-        while (!m_Window.ShouldClose())
+        while (!m_Window->ShouldClose())
         {
             Update();
         }
@@ -32,10 +38,16 @@ namespace Luna
 
     void Application::Update()
     {
-        m_Window.Update();
+        m_Window->Update();
+        m_LayerStack.Update(1.0f);
     }
 
     void Application::Shutdown()
     {
+    }
+
+    Application& Application::Get()
+    {
+        return *s_Application;
     }
 }

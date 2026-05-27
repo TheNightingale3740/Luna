@@ -1,6 +1,7 @@
 #pragma once
 
 #include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
 
 #include <string>
 
@@ -20,15 +21,18 @@ namespace Luna
         ~Window();
 
         void Create();
-
+        void Destroy();
+        
         void Update();
+
+        glm::vec2 GetMousePos() const;
 
         bool ShouldClose() const { return glfwWindowShouldClose(m_WindowHandle); };
 
         GLFWwindow* GetHandle() { return m_WindowHandle; }
         const GLFWwindow* GetHandle() const { return m_WindowHandle; }
     private:
-        GLFWwindow* m_WindowHandle = nullptr;
         WindowSpecification m_Specification;
+        GLFWwindow* m_WindowHandle = nullptr;
     };
 }
