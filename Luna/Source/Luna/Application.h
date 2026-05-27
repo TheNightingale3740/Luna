@@ -10,7 +10,7 @@ namespace Luna
 {
     struct ApplicationSpecification
     {
-        std::string Name = "Untitled";
+        std::string Name = "Application";
         WindowSpecification WindowSpec;
     };
 
