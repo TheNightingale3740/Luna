@@ -1,5 +1,7 @@
 #include <Luna.h>
 
+#include <print>
+
 class EditorLayer : public Luna::Layer
 {
 public:
@@ -9,6 +11,11 @@ public:
     
     ~EditorLayer()
     {}
+
+    void OnEvent(Luna::Event& event) override
+    {
+        std::println("Event: {}", event.ToString());
+    }
 
     void OnAttach() override
     {
@@ -20,7 +27,6 @@ public:
 
     void OnUpdate(float ts) override
     {
-
     }
 
     void OnUIRender() override

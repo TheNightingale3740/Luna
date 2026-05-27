@@ -28,7 +28,11 @@ namespace Luna
             return nullptr;
         }
 
-        void Update(float ts);
+        void OnEvent(Event& event) const;
+
+        void OnUpdate(float ts) const;
+        void OnUIRender() const;
+        void OnRender() const;
     private:
         std::vector<std::unique_ptr<Layer>> m_LayerStack;
     };

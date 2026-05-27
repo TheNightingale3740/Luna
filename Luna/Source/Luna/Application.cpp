@@ -1,5 +1,7 @@
 #include "Application.h"
 
+#include <print>
+
 namespace Luna
 {
     static Application *s_Application = nullptr;
@@ -11,7 +13,9 @@ namespace Luna
         
         glfwInit();
 
-        m_Window = std::make_shared<Window>(specification.WindowSpec);
+        m_Specification.WindowSpec.EventCallback = [this](Event& event) { RaiseEvent(event); };
+
+        m_Window = std::make_shared<Window>(m_Specification.WindowSpec);
         m_Window->Create();
     }
 
@@ -21,12 +25,41 @@ namespace Luna
         glfwTerminate();
     }
 
+    void Application::RaiseEvent(Event& event)
+    {
+        m_LayerStack.OnEvent(event);
+    }
+
+    void Application::Stop()
+    {
+        m_Running = false;
+    }
+
     void Application::Run()
     {
         Init();
-        while (!m_Window->ShouldClose())
+
+        float lastTime = GetTime();
+
+        while (m_Running)
         {
-            Update();
+            glfwPollEvents();
+
+            if (m_Window->ShouldClose())
+            {
+                Stop();
+                break;
+            }
+
+            float currentTime = GetTime();
+            float ts = glm::clamp(currentTime - lastTime, 0.001f, 0.1f);
+            lastTime = currentTime;
+
+            m_LayerStack.OnUpdate(ts);
+            m_LayerStack.OnUIRender();
+            m_LayerStack.OnRender();
+
+            m_Window->OnUpdate();
         }
 
         Shutdown();
@@ -38,8 +71,7 @@ namespace Luna
 
     void Application::Update()
     {
-        m_Window->Update();
-        m_LayerStack.Update(1.0f);
+        
     }
 
     void Application::Shutdown()
@@ -49,5 +81,10 @@ namespace Luna
     Application& Application::Get()
     {
         return *s_Application;
+    }
+
+    float Application::GetTime()
+    {
+        return static_cast<float>(glfwGetTime());
     }
 }

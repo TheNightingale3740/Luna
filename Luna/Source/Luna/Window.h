@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Luna/Events/Event.h"
+
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 
@@ -12,6 +14,9 @@ namespace Luna
         std::string Title = "Window";
         uint32_t Width = 1280;
         uint32_t Height = 720;
+
+        using EventCallbackFn = std::function<void(Event&)>;
+		EventCallbackFn EventCallback;
     };
 
     class Window
@@ -23,7 +28,9 @@ namespace Luna
         void Create();
         void Destroy();
         
-        void Update();
+        void OnUpdate();
+
+        void RaiseEvent(Event& event);
 
         glm::vec2 GetMousePos() const;
 

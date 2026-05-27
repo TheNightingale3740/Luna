@@ -3,8 +3,9 @@
 #include "Luna/Window.h"
 #include "Luna/LayerStack.h"
 
+#include "Luna/Events/Event.h"
+
 #include <string>
-#include <iostream>
 
 namespace Luna
 {
@@ -35,17 +36,23 @@ namespace Luna
         }
 
         void Run();
+        void Stop();
+
+        void RaiseEvent(Event& event);
 
         void Init();
         void Update();
         void Shutdown();
 
         static Application& Get();
+        static float GetTime();
     private:
         ApplicationSpecification m_Specification;
 
         std::shared_ptr<Window> m_Window = nullptr;
         LayerStack m_LayerStack;
+
+        bool m_Running = true;
 
         friend class Layer;
     };
