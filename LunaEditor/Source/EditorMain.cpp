@@ -1,22 +1,13 @@
 #include <Luna.h>
 
-#include <iostream> // TODO: Need a logging library soon!
-
-class LunaEditor : public Luna::Application
-{
-public:
-    LunaEditor()
-    {
-        std::cout << "Created Application!" << std::endl;
-    }
-
-    ~LunaEditor()
-    {
-        std::cout << "Destroyed Application!" << std::endl;
-    }
-};
-
 Luna::Application* Luna::CreateApplication()
 {
-    return new LunaEditor();
+    Luna::ApplicationSpecification spec;
+    spec.Name = "Luna Editor";
+    spec.WindowSpec.Title = "Luna Editor";
+    spec.WindowSpec.Width = 1280;
+    spec.WindowSpec.Height = 720;
+
+    Luna::Application *app = new Luna::Application(spec);
+    return app;
 }

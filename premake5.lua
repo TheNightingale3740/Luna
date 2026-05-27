@@ -21,6 +21,7 @@ workspace "Luna"
 
         includedirs
         {
+            "Luna/Source",
             "Luna/Vendor/glfw/include",
             "Luna/Vendor/metal-cpp",
             "Luna/Vendor/imgui",
@@ -35,7 +36,9 @@ workspace "Luna"
             "MetalKit.framework",
             "Cocoa.framework",
             "QuartzCore.framework",
-            "Foundation.framework"
+            "Foundation.framework",
+            "IOKit.framework",
+            "CoreVideo.framework"
         }
 
         filter "system:macos"
@@ -70,12 +73,26 @@ workspace "Luna"
 
         includedirs
         {
-            "Luna/Source"
+            "Luna/Source",
+            "Luna/Vendor/glfw/include"
+        }
+
+        libdirs
+        {
+            "Luna/Vendor/glfw/lib"
         }
 
         links
         {
-            "Luna"
+            "Luna",
+            "glfw3",
+            "Metal.framework",
+            "MetalKit.framework",
+            "Cocoa.framework",
+            "QuartzCore.framework",
+            "Foundation.framework",
+            "IOKit.framework",
+            "CoreVideo.framework"
         }
 
         filter "system:macos"
