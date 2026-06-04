@@ -38,12 +38,13 @@ namespace Luna
 		EventDispatcher(Event& event)
 			: m_Event(event) { }
 
-		template<typename T>
-		bool Dispatch(EventFn<T> func)
+		template<typename TEvent>
+		requires std::is_base_of_v<Event, TEvent>
+		bool Dispatch(EventFn<TEvent> func)
 		{
-			if (m_Event.GetEventType() == T::GetStaticType() && !m_Event.Handled)
+			if (m_Event.GetEventType() == TEvent::GetStaticType() && !m_Event.Handled)
 			{
-				m_Event.Handled = func(*(T*)&m_Event);
+				m_Event.Handled = func(*(TEvent*)&m_Event);
 				return true;
 			}
 			return false;

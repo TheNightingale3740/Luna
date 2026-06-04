@@ -4,12 +4,11 @@
 
 namespace Luna
 {
-    extern Luna::Application* CreateApplication();
+    extern std::unique_ptr<Luna::Application> CreateApplication();
 }
 
 int main()
 {
-    Luna::Application* app = Luna::CreateApplication();
+    std::unique_ptr<Luna::Application> app = Luna::CreateApplication();
     app->Run();
-    delete app;
 }

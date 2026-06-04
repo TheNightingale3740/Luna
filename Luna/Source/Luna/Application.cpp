@@ -11,6 +11,8 @@ namespace Luna
     {
         s_Application = this;
         
+        m_Device = MTL::CreateSystemDefaultDevice();
+
         glfwInit();
 
         m_Specification.WindowSpec.EventCallback = [this](Event& event) { RaiseEvent(event); };
@@ -80,7 +82,8 @@ namespace Luna
 
     Application& Application::Get()
     {
-        return *s_Application;
+        if (s_Application)
+            return *s_Application;
     }
 
     float Application::GetTime()

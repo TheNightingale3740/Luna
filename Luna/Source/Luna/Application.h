@@ -5,6 +5,8 @@
 
 #include "Luna/Events/Event.h"
 
+#include <Metal/Metal.hpp>
+
 #include <string>
 
 namespace Luna
@@ -44,6 +46,10 @@ namespace Luna
         void Update();
         void Shutdown();
 
+        std::shared_ptr<Window> GetMainWindow() const { return m_Window; }
+
+        MTL::Device* GetDevice() const { return m_Device; }
+
         static Application& Get();
         static float GetTime();
     private:
@@ -51,6 +57,8 @@ namespace Luna
 
         std::shared_ptr<Window> m_Window = nullptr;
         LayerStack m_LayerStack;
+
+        MTL::Device* m_Device = nullptr;
 
         bool m_Running = true;
 

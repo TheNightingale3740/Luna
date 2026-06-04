@@ -14,8 +14,10 @@ workspace "Luna"
         {
             "%{prj.name}/Source/**.h",
             "%{prj.name}/Source/**.cpp",
+            "%{prj.name}/Source/**.mm",
             "%{prj.name}/Source/Luna/**.h",
             "%{prj.name}/Source/Luna/**.cpp",
+            "%{prj.name}/Source/Luna/**.mm",
             "Luna/Vendor/imgui/*.cpp"
         }
 
@@ -75,7 +77,8 @@ workspace "Luna"
         {
             "Luna/Source",
             "Luna/Vendor/glfw/include",
-            "Luna/Vendor/glm"
+            "Luna/Vendor/glm",
+            "Luna/Vendor/metal-cpp"
         }
 
         libdirs
@@ -100,14 +103,14 @@ workspace "Luna"
             defines "LUNA_PLATFORM_MACOS"
             systemversion "latest"
 
-            filter "configurations:Debug"
-                defines "LUNA_DEBUG"
-                symbols "On"
+        filter "configurations:Debug"
+            defines "LUNA_DEBUG"
+            symbols "On"
 
-            filter "configurations:Release"
-                defines "LUNA_RELEASE"
-                optimize "On"
+        filter "configurations:Release"
+            defines "LUNA_RELEASE"
+            optimize "On"
 
-            filter "configurations:Dist"
-                defines "LUNA_DIST"
-                optimize "On"
+        filter "configurations:Dist"
+            defines "LUNA_DIST"
+            optimize "On"

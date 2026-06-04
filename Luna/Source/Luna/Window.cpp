@@ -1,7 +1,11 @@
 #include "Luna/Window.h"
 
+#include "Luna/Application.h"
+
 #include "Luna/Events/WindowEvents.h"
 #include "Luna/Events/InputEvents.h"
+
+#include "Luna/Utils/MetalContext.h"
 
 namespace Luna
 {
@@ -21,8 +25,23 @@ namespace Luna
 
         m_WindowHandle = glfwCreateWindow((int)m_Specification.Width, (int)m_Specification.Height, m_Specification.Title.c_str(), nullptr, nullptr);
 
-
         glfwSetWindowUserPointer(m_WindowHandle, this);
+
+		int width, height;
+		glfwGetFramebufferSize(m_WindowHandle, &width, &height);
+
+		m_MetalLayer = CA::MetalLayer::layer();
+		m_MetalLayer->setDevice(Luna::Application::Get().GetDevice());
+		m_MetalLayer->setPixelFormat(MTL::PixelFormatBGRA8Unorm_sRGB);
+		m_MetalLayer->setDrawableSize(CGSizeMake(width, height));
+
+		AttachMetalLayerToWindow(m_WindowHandle, m_MetalLayer);
+
+		glfwSetFramebufferSizeCallback(m_WindowHandle, [](GLFWwindow* handle, int width, int height)
+		{
+			Window& window = *((Window*)glfwGetWindowUserPointer(handle));	
+			window.ResizeDrawable(width, height);
+		});
 
         glfwSetWindowCloseCallback(m_WindowHandle, [](GLFWwindow* handle)
 		{
@@ -110,7 +129,7 @@ namespace Luna
 
     void Window::OnUpdate()
     {
-        // TODO
+		glfwPollEvents();
     }
 
     void Window::RaiseEvent(Event& event)
@@ -118,6 +137,12 @@ namespace Luna
         if (m_Specification.EventCallback)
             m_Specification.EventCallback(event);
     }
+
+	void Window::ResizeDrawable(uint32_t width, uint32_t height)
+	{
+		if (m_MetalLayer)
+			m_MetalLayer->setDrawableSize(CGSizeMake(width, height));
+	}
 
     glm::vec2 Window::GetMousePos() const
     {

@@ -5,6 +5,10 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 
+#include <Metal/Metal.hpp>
+#include <QuartzCore/QuartzCore.hpp>
+#include <QuartzCore/CAMetalLayer.hpp>
+
 #include <string>
 
 namespace Luna
@@ -36,10 +40,16 @@ namespace Luna
 
         bool ShouldClose() const { return glfwWindowShouldClose(m_WindowHandle); };
 
+        CA::MetalDrawable* GetCurrentDrawable() const { return m_MetalLayer->nextDrawable(); }
+
         GLFWwindow* GetHandle() { return m_WindowHandle; }
         const GLFWwindow* GetHandle() const { return m_WindowHandle; }
+    protected:
+        void ResizeDrawable(uint32_t width, uint32_t height);
     private:
         WindowSpecification m_Specification;
         GLFWwindow* m_WindowHandle = nullptr;
+
+        CA::MetalLayer* m_MetalLayer = nullptr;
     };
 }

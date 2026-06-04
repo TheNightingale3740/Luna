@@ -28,7 +28,7 @@ namespace Luna
             return nullptr;
         }
 
-        void OnEvent(Event& event) const;
+        void OnEvent(Event& event);
 
         void OnUpdate(float ts) const;
         void OnUIRender() const;

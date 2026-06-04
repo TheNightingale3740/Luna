@@ -34,7 +34,7 @@ namespace Luna
         }
     }
 
-    void LayerStack::OnEvent(Event& event) const
+    void LayerStack::OnEvent(Event& event)
     {
         for (auto& layer : std::views::reverse(m_LayerStack))
         {
