@@ -5,7 +5,7 @@
 #include "Luna/Events/WindowEvents.h"
 #include "Luna/Events/InputEvents.h"
 
-#include "Luna/Utils/MetalContext.h"
+#include "Luna/Metal/MetalContext.h"
 
 namespace Luna
 {
@@ -32,7 +32,8 @@ namespace Luna
 
 		m_MetalLayer = CA::MetalLayer::layer();
 		m_MetalLayer->setDevice(Luna::Application::Get().GetDevice());
-		m_MetalLayer->setPixelFormat(MTL::PixelFormatBGRA8Unorm_sRGB);
+		//m_MetalLayer->setPixelFormat(MTL::PixelFormatBGRA8Unorm_sRGB);
+		m_MetalLayer->setPixelFormat(MTL::PixelFormatBGRA8Unorm);
 		m_MetalLayer->setDrawableSize(CGSizeMake(width, height));
 
 		AttachMetalLayerToWindow(m_WindowHandle, m_MetalLayer);
@@ -123,13 +124,18 @@ namespace Luna
     {
         if (m_WindowHandle)
             glfwDestroyWindow(m_WindowHandle);
-        
         m_WindowHandle = nullptr;
+		
+		if (m_MetalLayer)
+		{
+			m_MetalLayer->release();
+			m_MetalLayer = nullptr;
+		}
     }
 
     void Window::OnUpdate()
     {
-		glfwPollEvents();
+		// Do Something here if needed
     }
 
     void Window::RaiseEvent(Event& event)

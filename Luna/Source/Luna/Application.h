@@ -5,6 +5,8 @@
 
 #include "Luna/Events/Event.h"
 
+#include "Luna/ImGui/ImGuiBackend.h"
+
 #include <Metal/Metal.hpp>
 
 #include <string>
@@ -14,6 +16,7 @@ namespace Luna
     struct ApplicationSpecification
     {
         std::string Name = "Application";
+        bool Dockspace = true;
         WindowSpecification WindowSpec;
     };
 
@@ -49,6 +52,7 @@ namespace Luna
         std::shared_ptr<Window> GetMainWindow() const { return m_Window; }
 
         MTL::Device* GetDevice() const { return m_Device; }
+        MTL::CommandQueue* GetCommandQueue() const { return m_CommandQueue; }
 
         static Application& Get();
         static float GetTime();
@@ -59,6 +63,7 @@ namespace Luna
         LayerStack m_LayerStack;
 
         MTL::Device* m_Device = nullptr;
+        MTL::CommandQueue *m_CommandQueue = nullptr;
 
         bool m_Running = true;
 

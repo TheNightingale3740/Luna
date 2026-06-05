@@ -18,7 +18,9 @@ workspace "Luna"
             "%{prj.name}/Source/Luna/**.h",
             "%{prj.name}/Source/Luna/**.cpp",
             "%{prj.name}/Source/Luna/**.mm",
-            "Luna/Vendor/imgui/*.cpp"
+            "Luna/Vendor/imgui/*.cpp",
+            "Luna/Vendor/imgui/backends/imgui_impl_glfw.cpp",
+            "Luna/Vendor/imgui/backends/imgui_impl_metal.mm"
         }
 
         includedirs
@@ -78,6 +80,7 @@ workspace "Luna"
             "Luna/Source",
             "Luna/Vendor/glfw/include",
             "Luna/Vendor/glm",
+            "Luna/Vendor/imgui",
             "Luna/Vendor/metal-cpp"
         }
 
