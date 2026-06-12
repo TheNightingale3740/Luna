@@ -34,8 +34,16 @@ public:
 
         ImGui::Begin("Hello, ImGui!");
         ImGui::Text("This is a simple text in the editor layer.");
+
+        if (ImGui::Button("Click me"))
+            m_Text = true;
+        if (m_Text)
+            ImGui::Text("Hello :P!");
+
         ImGui::End();
     }
+private:
+    bool m_Text = false;
 };
 
 std::unique_ptr<Luna::Application> Luna::CreateApplication()
@@ -43,6 +51,7 @@ std::unique_ptr<Luna::Application> Luna::CreateApplication()
     Luna::ApplicationSpecification spec;
     spec.Name = "Luna Editor";
     spec.Dockspace = true;
+    spec.WindowSpec.CustomTitlebar = true;
     spec.WindowSpec.Title = "Luna Editor";
     spec.WindowSpec.Width = 1280;
     spec.WindowSpec.Height = 720;

@@ -9,6 +9,7 @@
 namespace Luna
 {
 
-    void AttachMetalLayerToWindow(GLFWwindow* windowHandle, CA::MetalLayer* metalLayer);
+    void AttachMetalLayerToWindow(GLFWwindow* windowHandle, CA::MetalLayer* metalLayer, bool titlebar = false);
+    void BeginWindowDrag(GLFWwindow* windowHandle);
 
 }

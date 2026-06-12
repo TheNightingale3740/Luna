@@ -23,7 +23,7 @@ namespace Luna
 
         ImGui::StyleColorsDark();
         ImVec4* colors = ImGui::GetStyle().Colors;
-        colors[ImGuiCol_WindowBg]               = ImVec4(0.03f, 0.03f, 0.03f, 0.94f);
+        colors[ImGuiCol_WindowBg]               = ImVec4(0.14f, 0.14f, 0.14f, 1.0f);
         colors[ImGuiCol_PopupBg]                = ImVec4(0.11f, 0.06f, 0.12f, 0.94f);
         colors[ImGuiCol_FrameBg]                = ImVec4(0.28f, 0.28f, 0.28f, 0.54f);
         colors[ImGuiCol_FrameBgHovered]         = ImVec4(0.31f, 0.31f, 0.31f, 0.40f);

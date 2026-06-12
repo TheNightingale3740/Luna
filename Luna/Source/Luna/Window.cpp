@@ -9,6 +9,7 @@
 
 namespace Luna
 {
+
     Window::Window(const WindowSpecification& spec)
         : m_Specification(spec)
     {
@@ -36,7 +37,7 @@ namespace Luna
 		m_MetalLayer->setPixelFormat(MTL::PixelFormatBGRA8Unorm);
 		m_MetalLayer->setDrawableSize(CGSizeMake(width, height));
 
-		AttachMetalLayerToWindow(m_WindowHandle, m_MetalLayer);
+		AttachMetalLayerToWindow(m_WindowHandle, m_MetalLayer, !(m_Specification.CustomTitlebar));
 
 		glfwSetFramebufferSizeCallback(m_WindowHandle, [](GLFWwindow* handle, int width, int height)
 		{
@@ -156,4 +157,18 @@ namespace Luna
         glfwGetCursorPos(m_WindowHandle, &x, &y);
         return { static_cast<float>(x), static_cast<float>(y) };
     }
+
+	glm::vec2 Window::GetWindowPosition() const
+	{
+		int xPos, yPos;
+		glfwGetWindowPos(m_WindowHandle, &xPos, &yPos);
+
+		return { xPos, yPos };
+	}
+
+	void Window::BeginWindowDrag() const
+	{
+		Luna::BeginWindowDrag(m_WindowHandle);
+	}
+	
 }

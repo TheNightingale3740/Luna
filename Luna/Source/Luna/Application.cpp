@@ -65,6 +65,8 @@ namespace Luna
 
         MTL::RenderPassDescriptor *renderPassDescriptor = MTL::RenderPassDescriptor::alloc()->init();
 
+        ImGuiWindowFlags window_flags = 0;
+
         while (m_Running)
         {
             NS::AutoreleasePool *pool = NS::AutoreleasePool::alloc()->init();
@@ -86,15 +88,65 @@ namespace Luna
             MTL::CommandBuffer *commandBuffer = m_CommandQueue->commandBuffer();
             renderPassDescriptor->colorAttachments()->object(0)->setTexture(drawable->texture());
             renderPassDescriptor->colorAttachments()->object(0)->setLoadAction(MTL::LoadActionClear);
-            renderPassDescriptor->colorAttachments()->object(0)->setClearColor(MTL::ClearColor(0, 0, 0, 1));
+            renderPassDescriptor->colorAttachments()->object(0)->setClearColor(MTL::ClearColor(1, 0, 1, 1));
             renderPassDescriptor->colorAttachments()->object(0)->setStoreAction(MTL::StoreActionStore);
 
             MTL::RenderCommandEncoder *encoder = commandBuffer->renderCommandEncoder(renderPassDescriptor);
             
             ImGuiBackend::NewFrame(renderPassDescriptor);
 
-            if (m_Specification.Dockspace)
-                ImGui::DockSpaceOverViewport();
+            uint32_t titlebarHeight = 50;
+
+            if (m_Specification.WindowSpec.CustomTitlebar)
+            {
+                ImDrawList *drawList = ImGui::GetBackgroundDrawList();
+
+                ImVec2 titlebarSize = ImVec2(ImGui::GetIO().DisplaySize.x, titlebarHeight);
+                drawList->AddRectFilled(ImVec2(0, 0), titlebarSize, ImColor(15, 15, 15, 255), 0.0f);
+                
+                ImVec2 textSize = ImGui::CalcTextSize(m_Specification.Name.c_str());
+                drawList->AddText(ImVec2(ImGui::GetIO().DisplaySize.x / 2 - (textSize.x / 2), titlebarHeight / 2 - (textSize.y / 2)), ImColor(255, 255, 255, 255), m_Specification.Name.c_str(), nullptr);
+
+
+                // Draw an invisible button for custom window dragging
+                ImGui::SetNextWindowPos(ImVec2(0, 0));
+                ImGui::SetNextWindowSize(titlebarSize);
+                ImGui::SetNextWindowBgAlpha(0.0f);
+                ImGuiWindowFlags flags = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | 
+                                        ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoInputs & ~ImGuiWindowFlags_NoInputs |
+                                        ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNav;
+                ImGui::Begin("##TitlebarDragZone", nullptr, flags);
+                ImGui::InvisibleButton("Drag Zone", titlebarSize);
+
+                // Handle titlenbar drag
+                if (ImGui::IsItemActive())
+                {
+                    m_Window->BeginWindowDrag();
+                }
+                ImGui::End();
+            }
+            else
+            {
+                titlebarHeight = 0;
+            }
+
+            // Fullscreen dockspace: practically the same as calling DockSpaceOverViewport();
+            const ImGuiViewport* viewport = ImGui::GetMainViewport();
+            ImGui::SetNextWindowPos({viewport->WorkPos.x, viewport->WorkPos.y + titlebarHeight});
+            ImGui::SetNextWindowSize({viewport->WorkSize.x, viewport->WorkSize.y - titlebarHeight});
+            ImGui::SetNextWindowViewport(viewport->ID);
+            ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
+            ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+            window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
+            window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
+            window_flags |= ImGuiWindowFlags_NoBackground;
+            window_flags |= ImGuiWindowFlags_NoDecoration;
+            ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
+
+            ImGui::Begin("DockSpace", nullptr, window_flags);
+            ImGui::DockSpace(ImGui::GetID("DockSpace"));
+            ImGui::End();
+            ImGui::PopStyleVar(3);
 
             m_LayerStack.OnUpdate(ts);
             m_LayerStack.OnUIRender();

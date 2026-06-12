@@ -19,6 +19,8 @@ namespace Luna
         uint32_t Width = 1280;
         uint32_t Height = 720;
 
+        bool CustomTitlebar = false;
+
         using EventCallbackFn = std::function<void(Event&)>;
 		EventCallbackFn EventCallback;
     };
@@ -39,6 +41,9 @@ namespace Luna
         glm::vec2 GetMousePos() const;
 
         bool ShouldClose() const { return glfwWindowShouldClose(m_WindowHandle); };
+
+        glm::vec2 GetWindowPosition() const;
+        void BeginWindowDrag() const;
 
         CA::MetalDrawable* GetCurrentDrawable() const { return m_MetalLayer->nextDrawable(); }
 
