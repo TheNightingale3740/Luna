@@ -1,13 +1,13 @@
-#include "Luna/Window.h"
+#include "Radiance/Window.h"
 
-#include "Luna/Application.h"
+#include "Radiance/Application.h"
 
-#include "Luna/Events/WindowEvents.h"
-#include "Luna/Events/InputEvents.h"
+#include "Radiance/Events/WindowEvents.h"
+#include "Radiance/Events/InputEvents.h"
 
-#include "Luna/Metal/MetalContext.h"
+#include "Radiance/Metal/MetalContext.h"
 
-namespace Luna
+namespace Radiance
 {
 
     Window::Window(const WindowSpecification& spec)
@@ -32,13 +32,41 @@ namespace Luna
 		glfwGetFramebufferSize(m_WindowHandle, &width, &height);
 
 		m_MetalLayer = CA::MetalLayer::layer();
-		m_MetalLayer->setDevice(Luna::Application::Get().GetDevice());
-		//m_MetalLayer->setPixelFormat(MTL::PixelFormatBGRA8Unorm_sRGB);
+		m_MetalLayer->setDevice(Radiance::Application::Get()->GetDevice());
 		m_MetalLayer->setPixelFormat(MTL::PixelFormatBGRA8Unorm);
 		m_MetalLayer->setDrawableSize(CGSizeMake(width, height));
 
 		AttachMetalLayerToWindow(m_WindowHandle, m_MetalLayer, !(m_Specification.CustomTitlebar));
 
+		SetWindowEventCallbacks();
+    }
+
+    void Window::Destroy()
+    {
+        if (m_WindowHandle)
+            glfwDestroyWindow(m_WindowHandle);
+        m_WindowHandle = nullptr;
+		
+		if (m_MetalLayer)
+		{
+			m_MetalLayer->release();
+			m_MetalLayer = nullptr;
+		}
+    }
+
+    void Window::OnUpdate()
+    {
+		// Do Something here if needed
+    }
+
+    void Window::RaiseEvent(Event& event)
+    {
+        if (m_Specification.EventCallback)
+            m_Specification.EventCallback(event);
+    }
+
+	void Window::SetWindowEventCallbacks()
+	{
 		glfwSetFramebufferSizeCallback(m_WindowHandle, [](GLFWwindow* handle, int width, int height)
 		{
 			Window& window = *((Window*)glfwGetWindowUserPointer(handle));	
@@ -119,31 +147,7 @@ namespace Luna
 			MouseMovedEvent event(x, y);
 			window.RaiseEvent(event);
 		});
-    }
-
-    void Window::Destroy()
-    {
-        if (m_WindowHandle)
-            glfwDestroyWindow(m_WindowHandle);
-        m_WindowHandle = nullptr;
-		
-		if (m_MetalLayer)
-		{
-			m_MetalLayer->release();
-			m_MetalLayer = nullptr;
-		}
-    }
-
-    void Window::OnUpdate()
-    {
-		// Do Something here if needed
-    }
-
-    void Window::RaiseEvent(Event& event)
-    {
-        if (m_Specification.EventCallback)
-            m_Specification.EventCallback(event);
-    }
+	}
 
 	void Window::ResizeDrawable(uint32_t width, uint32_t height)
 	{
@@ -168,7 +172,7 @@ namespace Luna
 
 	void Window::BeginWindowDrag() const
 	{
-		Luna::BeginWindowDrag(m_WindowHandle);
+		Radiance::BeginWindowDrag(m_WindowHandle);
 	}
 	
 }

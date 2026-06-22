@@ -4,7 +4,7 @@
 
 #include <imgui.h>
 
-namespace Luna
+namespace Radiance
 {
     class ImGuiBackend
     {

@@ -3,7 +3,7 @@
 #include <string>
 #include <functional>
 
-namespace Luna
+namespace Radiance
 {
 
 	enum class EventType

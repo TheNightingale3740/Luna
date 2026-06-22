@@ -6,7 +6,7 @@
 
 #include <GLFW/glfw3.h>
 
-namespace Luna
+namespace Radiance
 {
 
     void AttachMetalLayerToWindow(GLFWwindow* windowHandle, CA::MetalLayer* metalLayer, bool titlebar = false);

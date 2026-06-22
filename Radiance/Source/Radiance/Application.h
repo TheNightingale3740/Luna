@@ -1,17 +1,15 @@
 #pragma once
 
-#include "Luna/Window.h"
-#include "Luna/LayerStack.h"
-
-#include "Luna/Events/Event.h"
-
-#include "Luna/ImGui/ImGuiBackend.h"
-
 #include <Metal/Metal.hpp>
+
+#include "Radiance/Window.h"
+#include "Radiance/Core/LayerStack.h"
+#include "Radiance/Events/Event.h"
+#include "Radiance/ImGui/ImGuiBackend.h"
 
 #include <string>
 
-namespace Luna
+namespace Radiance
 {
     struct ApplicationSpecification
     {
@@ -25,6 +23,15 @@ namespace Luna
     public:
         Application(const ApplicationSpecification& specification = ApplicationSpecification());
         ~Application();
+        
+        void Init();
+        void Update();
+        void Shutdown();
+
+        void Run();
+        void Stop();
+
+        void RaiseEvent(Event& event);
 
         template <typename TLayer>
         requires std::is_base_of_v<Layer, TLayer>
@@ -40,33 +47,22 @@ namespace Luna
             return m_LayerStack.GetLayer<TLayer>();
         }
 
-        void Run();
-        void Stop();
-
-        void RaiseEvent(Event& event);
-
-        void Init();
-        void Update();
-        void Shutdown();
-
         std::shared_ptr<Window> GetMainWindow() const { return m_Window; }
-
         MTL::Device* GetDevice() const { return m_Device; }
         MTL::CommandQueue* GetCommandQueue() const { return m_CommandQueue; }
-
-        static Application& Get();
+        static Application* Get();
         static float GetTime();
     private:
-        ApplicationSpecification m_Specification;
-
+        void DrawTitlebar();
+    private:
         std::shared_ptr<Window> m_Window = nullptr;
-        LayerStack m_LayerStack;
 
         MTL::Device* m_Device = nullptr;
         MTL::CommandQueue *m_CommandQueue = nullptr;
 
-        bool m_Running = true;
+        LayerStack m_LayerStack;
+        ApplicationSpecification m_Specification;
 
-        friend class Layer;
+        bool m_Running = true;
     };
 }

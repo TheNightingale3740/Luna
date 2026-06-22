@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Luna/Events/Event.h"
+#include "Radiance/Events/Event.h"
 
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -11,7 +11,7 @@
 
 #include <string>
 
-namespace Luna
+namespace Radiance
 {
     struct WindowSpecification
     {
@@ -35,26 +35,26 @@ namespace Luna
         void Destroy();
         
         void OnUpdate();
-
         void RaiseEvent(Event& event);
 
-        glm::vec2 GetMousePos() const;
-
         bool ShouldClose() const { return glfwWindowShouldClose(m_WindowHandle); };
-
-        glm::vec2 GetWindowPosition() const;
         void BeginWindowDrag() const;
 
         CA::MetalDrawable* GetCurrentDrawable() const { return m_MetalLayer->nextDrawable(); }
+        
+        glm::vec2 GetWindowPosition() const;
+        glm::vec2 GetMousePos() const;
 
         GLFWwindow* GetHandle() { return m_WindowHandle; }
         const GLFWwindow* GetHandle() const { return m_WindowHandle; }
     protected:
         void ResizeDrawable(uint32_t width, uint32_t height);
     private:
-        WindowSpecification m_Specification;
+        void SetWindowEventCallbacks();
+    private:
         GLFWwindow* m_WindowHandle = nullptr;
-
         CA::MetalLayer* m_MetalLayer = nullptr;
+        
+        WindowSpecification m_Specification;
     };
 }

@@ -2,7 +2,7 @@
 
 #include <ranges>
 
-namespace Luna
+namespace Radiance
 {
     void LayerStack::PushLayer(std::unique_ptr<Layer> layer)
     {

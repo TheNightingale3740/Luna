@@ -4,7 +4,7 @@
 
 #include <format>
 
-namespace Luna 
+namespace Radiance 
 {
 
 	class WindowClosedEvent : public Event

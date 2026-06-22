@@ -1,6 +1,6 @@
 #include "ImGuiBackend.h"
 
-#include "Luna/Application.h"
+#include "Radiance/Application.h"
 
 #include <GLFW/glfw3.h>
 
@@ -10,7 +10,7 @@
 #import <Metal/Metal.h>
 #import <QuartzCore/QuartzCore.h>
 
-namespace Luna
+namespace Radiance
 {
     void ImGuiBackend::Init()
     {
@@ -67,10 +67,10 @@ namespace Luna
         io.ConfigDpiScaleFonts = true;          // [Experimental] Automatically overwrite style.FontScaleDpi in Begin() when Monitor DPI changes. This will scale fonts but _NOT_ scale sizes/padding for now.
         io.ConfigDpiScaleViewports = true;      // [Experimental] Scale Dear ImGui and Platform Windows when Monitor DPI changes.
 
-        io.Fonts->AddFontFromFileTTF("Luna/Source/Luna/Res/Fonts/Inter.ttf", 16.0f);
+        io.Fonts->AddFontFromFileTTF("Radiance/Source/Radiance/Res/Fonts/Inter.ttf", 16.0f);
 
-        GLFWwindow *window = Application::Get().GetMainWindow()->GetHandle();
-        MTL::Device *device = Application::Get().GetDevice();
+        GLFWwindow *window = Application::Get()->GetMainWindow()->GetHandle();
+        MTL::Device *device = Application::Get()->GetDevice();
 
         ImGui_ImplGlfw_InitForOpenGL(window, true);
         ImGui_ImplMetal_Init((__bridge id<MTLDevice>) device);

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Luna/Events/Event.h"
+#include "Radiance/Events/Event.h"
 
-namespace Luna
+namespace Radiance
 {
     class Layer
     {

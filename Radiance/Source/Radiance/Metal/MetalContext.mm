@@ -11,7 +11,7 @@
 
 #import <glm/glm.hpp>
 
-namespace Luna
+namespace Radiance
 {
     void AttachMetalLayerToWindow(GLFWwindow* windowHandle, CA::MetalLayer* metalLayer, bool titlebar)
     {
