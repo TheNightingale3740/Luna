@@ -1,9 +1,9 @@
-workspace "Luna"
+workspace "Radiance"
     architecture "arm64"
     configurations { "Debug", "Release", "Dist" }
 
-    project "Luna"
-        location "Luna"
+    project "Radiance"
+        location "Radiance"
         kind "StaticLib"
         language "C++"
         cppdialect "C++23"
@@ -15,9 +15,9 @@ workspace "Luna"
             "%{prj.name}/Source/**.h",
             "%{prj.name}/Source/**.cpp",
             "%{prj.name}/Source/**.mm",
-            "%{prj.name}/Source/Luna/**.h",
-            "%{prj.name}/Source/Luna/**.cpp",
-            "%{prj.name}/Source/Luna/**.mm",
+            "%{prj.name}/Source/Radiance/**.h",
+            "%{prj.name}/Source/Radiance/**.cpp",
+            "%{prj.name}/Source/Radiance/**.mm",
             "Luna/Vendor/imgui/*.cpp",
             "Luna/Vendor/imgui/backends/imgui_impl_glfw.cpp",
             "Luna/Vendor/imgui/backends/imgui_impl_metal.mm"
@@ -25,17 +25,17 @@ workspace "Luna"
 
         includedirs
         {
-            "Luna/Source",
-            "Luna/Vendor/glfw/include",
-            "Luna/Vendor/metal-cpp",
-            "Luna/Vendor/imgui",
-            "Luna/Vendor/spdlog/include",
-            "Luna/Vendor/glm"
+            "Radiance/Source",
+            "Radiance/Vendor/glfw/include",
+            "Radiance/Vendor/metal-cpp",
+            "Radiance/Vendor/imgui",
+            "Radiance/Vendor/spdlog/include",
+            "Radiance/Vendor/glm"
         }
 
         links
         {
-            "Luna/Vendor/glfw/lib/libglfw3.a",
+            "Radiance/Vendor/glfw/lib/libglfw3.a",
             "Metal.framework",
             "MetalKit.framework",
             "Cocoa.framework",
@@ -46,23 +46,23 @@ workspace "Luna"
         }
 
         filter "system:macos"
-            defines "LUNA_PLATFORM_MACOS"
+            defines "RD_PLATFORM_MACOS"
             systemversion "latest"
 
             filter "configurations:Debug"
-                defines "LUNA_DEBUG"
+                defines "RD_DEBUG"
                 symbols "On"
 
             filter "configurations:Release"
-                defines "LUNA_RELEASE"
+                defines "RD_RELEASE"
                 optimize "On"
 
             filter "configurations:Dist"
-                defines "LUNA_DIST"
+                defines "RD_DIST"
                 optimize "On"
 
-    project "LunaEditor"
-        location "LunaEditor"
+    project "RadianceEditor"
+        location "RadianceEditor"
         kind "ConsoleApp"
         language "C++"
         cppdialect "C++23"
@@ -77,21 +77,21 @@ workspace "Luna"
 
         includedirs
         {
-            "Luna/Source",
-            "Luna/Vendor/glfw/include",
-            "Luna/Vendor/glm",
-            "Luna/Vendor/imgui",
-            "Luna/Vendor/metal-cpp"
+            "Radiance/Source",
+            "Radiance/Vendor/glfw/include",
+            "Radiance/Vendor/glm",
+            "Radiance/Vendor/imgui",
+            "Radiance/Vendor/metal-cpp"
         }
 
         libdirs
         {
-            "Luna/Vendor/glfw/lib"
+            "Radiance/Vendor/glfw/lib"
         }
 
         links
         {
-            "Luna",
+            "Radiance",
             "glfw3",
             "Metal.framework",
             "MetalKit.framework",
@@ -103,17 +103,17 @@ workspace "Luna"
         }
 
         filter "system:macos"
-            defines "LUNA_PLATFORM_MACOS"
+            defines "RD_PLATFORM_MACOS"
             systemversion "latest"
 
         filter "configurations:Debug"
-            defines "LUNA_DEBUG"
+            defines "RD_DEBUG"
             symbols "On"
 
         filter "configurations:Release"
-            defines "LUNA_RELEASE"
+            defines "RD_RELEASE"
             optimize "On"
 
         filter "configurations:Dist"
-            defines "LUNA_DIST"
+            defines "RD_DIST"
             optimize "On"
