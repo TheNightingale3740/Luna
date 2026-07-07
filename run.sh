@@ -1,1 +1,0 @@
-./bin/Debug/LunaEditor/LunaEditor
