@@ -40,7 +40,13 @@ namespace Radiance
         bool ShouldClose() const { return glfwWindowShouldClose(m_WindowHandle); };
         void BeginWindowDrag() const;
 
-        CA::MetalDrawable* GetCurrentDrawable() const { return m_MetalLayer->nextDrawable(); }
+        CA::MetalDrawable* GetCurrentDrawable() const
+        {
+            if (!m_WindowHandle || !m_MetalLayer)
+                return nullptr;
+
+            return m_MetalLayer->nextDrawable();
+        }
         
         glm::vec2 GetWindowPosition() const;
         glm::vec2 GetMousePos() const;

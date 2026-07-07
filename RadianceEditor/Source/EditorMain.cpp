@@ -1,100 +1,67 @@
 #include <Radiance.h>
-
-#include <print> // TODO: Need a proper logging system
+#include <Radiance/Core/Log.h>
+#include <Radiance/Utils/Timer.h>
+#include <Radiance/Renderer/Renderer.h>
 
 class EditorLayer : public Radiance::Layer
 {
 public:
     EditorLayer()
         : Layer()
-    {}
-    
-    ~EditorLayer()
-    {}
-
-    void OnEvent(Radiance::Event& event) override
     {
-    }
-
-    void OnAttach() override
-    {
-
-    }
-
-    void OnDetach() override
-    {
-        if (m_Texture)
-        {
-            m_Texture->release();
-            m_Texture = nullptr;
-        }
-
-        delete[] m_ImageData;
-    }
-
-    void OnUpdate(float ts) override
-    {
+        RD_LOG_INFO("EditorLayer created");
     }
 
     void OnUIRender() override
     {
-        ImGui::Begin("Viewport");
 
-        ImGui::Image(m_Texture, ImVec2((float)m_Texture->width(), (float)m_Texture->height()));
+        ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+        ImGui::Begin("Viewport");
 
         ImVec2 viewportSize = ImGui::GetContentRegionAvail();
         m_ViewportWidth = viewportSize.x;
         m_ViewportHeight = viewportSize.y;
 
+        Render();
+
+        if (m_Renderer.GetFinalImage())
+            ImGui::Image(m_Renderer.GetFinalImage(), ImVec2((float)m_Renderer.GetFinalImage()->width(), (float)m_Renderer.GetFinalImage()->height()),
+                ImVec2(0, 1), ImVec2(1, 0));
+
         ImGui::End();
+        ImGui::PopStyleVar();
 
         ImGui::Begin("Settings");
-        if (ImGui::Button("Render"))
-        {
-            Render();
-        }
+        ImGui::Text("Last Render Time: %.3f ms", m_LastRenderTime);
+        ImGui::Text("Viewport Size: %d x %d", m_ViewportWidth, m_ViewportHeight);
+        ImGui::Text("You suck -_-");
         ImGui::End();
+    }
+
+    void OnEvent(Radiance::Event& event) override
+    {
     }
 private:
     void Render()
     {
-        // Rendering goes here
-        MTL::TextureDescriptor* textureDescriptor = MTL::TextureDescriptor::alloc()->init();
-        textureDescriptor->setWidth(m_ViewportWidth);
-        textureDescriptor->setHeight(m_ViewportHeight);
-        textureDescriptor->setPixelFormat(MTL::PixelFormat(MTL::PixelFormatBGRA8Unorm));
-        textureDescriptor->setTextureType(MTL::TextureType2D);
-        textureDescriptor->setUsage(MTL::TextureUsageShaderWrite | MTL::TextureUsageShaderRead);
-        textureDescriptor->setStorageMode(MTL::StorageModeShared);
+        Radiance::Timer timer;
+        m_Renderer.Resize(m_ViewportWidth, m_ViewportHeight);
+        m_Renderer.Render();
 
-        m_Texture = Radiance::Application::Get()->GetDevice()->newTexture(textureDescriptor);
-
-        m_ImageData = new uint32_t[m_ViewportWidth * m_ViewportHeight];
-
-        for (uint32_t y = 0; y < m_ViewportHeight; y++)
-        {
-            for (uint32_t x = 0; x < m_ViewportWidth; x++)
-            {
-                m_ImageData[x + y * m_ViewportWidth] = 0xffff0000;
-            }
-        }
-
-        m_Texture->replaceRegion(
-            MTL::Region(0, 0, m_ViewportWidth, m_ViewportHeight),
-            0, m_ImageData, m_ViewportWidth * sizeof(uint32_t)
-        );
+        m_LastRenderTime = timer.ElapsedMillis();
     }
 private:
-    MTL::Texture* m_Texture = nullptr;
+    Radiance::Renderer m_Renderer;
+
     uint32_t m_ViewportWidth = 0, m_ViewportHeight = 0;
 
-    uint32_t *m_ImageData = nullptr;
+    float m_LastRenderTime = 0.0f;
 };
 
 std::unique_ptr<Radiance::Application> Radiance::CreateApplication()
 {
     Radiance::ApplicationSpecification spec;
-    spec.Name = "Radiance Editor";
+    spec.Name = "Radiance";
     spec.Dockspace = true;
     spec.WindowSpec.CustomTitlebar = true;
     spec.WindowSpec.Title = "Radiance Editor";
@@ -103,5 +70,5 @@ std::unique_ptr<Radiance::Application> Radiance::CreateApplication()
 
     std::unique_ptr<Radiance::Application> app = std::make_unique<Radiance::Application>(spec);
     app->PushLayer<EditorLayer>();
-    return std::move(app);
+    return app;
 }

@@ -7,6 +7,8 @@
 
 #include "Radiance/Metal/MetalContext.h"
 
+#include <algorithm>
+
 namespace Radiance
 {
 
@@ -151,8 +153,15 @@ namespace Radiance
 
 	void Window::ResizeDrawable(uint32_t width, uint32_t height)
 	{
-		if (m_MetalLayer)
-			m_MetalLayer->setDrawableSize(CGSizeMake(width, height));
+		if (!m_MetalLayer)
+			return;
+
+		if (width == 0 || height == 0)
+			return;
+
+		const uint32_t clampedWidth = std::max<uint32_t>(width, 1);
+		const uint32_t clampedHeight = std::max<uint32_t>(height, 1);
+		m_MetalLayer->setDrawableSize(CGSizeMake(clampedWidth, clampedHeight));
 	}
 
     glm::vec2 Window::GetMousePos() const

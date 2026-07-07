@@ -7,8 +7,17 @@ workspace "Radiance"
         kind "StaticLib"
         language "C++"
         cppdialect "C++23"
-        targetdir ("bin/%{cfg.buildcfg}/%{prj.name}")
+        targetdir ("bin/%{cfg.buildcfg}/RadianceEditor.app/Contents/MacOS")
         objdir ("bin-int/%{cfg.buildcfg}/%{prj.name}")
+
+
+        prebuildcommands
+        {
+            "premake5 --file=../CompileShaders.lua gmake",
+            "lua ../GeneratePlist.lua bin/%{cfg.buildcfg}/RadianceEditor.app/Contents",
+            "{MKDIR} ../bin/%{cfg.buildcfg}/RadianceEditor.app/Contents/Resources",
+            "{COPY} ../Radiance/Source/Radiance/Res/* ../bin/%{cfg.buildcfg}/RadianceEditor.app/Contents/Resources"
+        }
 
         files
         {
@@ -18,9 +27,9 @@ workspace "Radiance"
             "%{prj.name}/Source/Radiance/**.h",
             "%{prj.name}/Source/Radiance/**.cpp",
             "%{prj.name}/Source/Radiance/**.mm",
-            "Luna/Vendor/imgui/*.cpp",
-            "Luna/Vendor/imgui/backends/imgui_impl_glfw.cpp",
-            "Luna/Vendor/imgui/backends/imgui_impl_metal.mm"
+            "Radiance/Vendor/imgui/*.cpp",
+            "Radiance/Vendor/imgui/backends/imgui_impl_glfw.cpp",
+            "Radiance/Vendor/imgui/backends/imgui_impl_metal.mm"
         }
 
         includedirs
@@ -49,24 +58,24 @@ workspace "Radiance"
             defines "RD_PLATFORM_MACOS"
             systemversion "latest"
 
-            filter "configurations:Debug"
-                defines "RD_DEBUG"
-                symbols "On"
+        filter "configurations:Debug"
+            defines "RD_DEBUG"
+            symbols "On"
 
-            filter "configurations:Release"
-                defines "RD_RELEASE"
-                optimize "On"
+        filter "configurations:Release"
+            defines "RD_RELEASE"
+            optimize "On"
 
-            filter "configurations:Dist"
-                defines "RD_DIST"
-                optimize "On"
+        filter "configurations:Dist"
+            defines "RD_DIST"
+            optimize "On"
 
     project "RadianceEditor"
         location "RadianceEditor"
         kind "ConsoleApp"
         language "C++"
         cppdialect "C++23"
-        targetdir ("bin/%{cfg.buildcfg}/%{prj.name}")
+        targetdir ("bin/%{cfg.buildcfg}/%{prj.name}.app/Contents/MacOS")
         objdir ("bin-int/%{cfg.buildcfg}/%{prj.name}")
 
         files
@@ -81,7 +90,8 @@ workspace "Radiance"
             "Radiance/Vendor/glfw/include",
             "Radiance/Vendor/glm",
             "Radiance/Vendor/imgui",
-            "Radiance/Vendor/metal-cpp"
+            "Radiance/Vendor/metal-cpp",
+            "Radiance/Vendor/spdlog/include"
         }
 
         libdirs

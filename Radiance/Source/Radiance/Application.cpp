@@ -4,7 +4,7 @@
 #include <backends/imgui_impl_glfw.h>
 #include <backends/imgui_impl_metal.h>
 
-#include <print> // TODO: Need a proper logging system.
+#include <filesystem>
 
 namespace Radiance
 {
@@ -13,11 +13,15 @@ namespace Radiance
     Application::Application(const ApplicationSpecification& specification)
         : m_Specification(specification)
     {
+        std::filesystem::current_path(GetExecutableDir().parent_path());
+
         s_Application = this;
+        Log::Init();
         
         m_Device = MTL::CreateSystemDefaultDevice();
         m_CommandQueue = m_Device->newCommandQueue();
 
+        glfwInitHint(GLFW_COCOA_CHDIR_RESOURCES, GLFW_FALSE);
         glfwInit();
 
         m_Specification.WindowSpec.EventCallback = [this](Event& event) { RaiseEvent(event); };

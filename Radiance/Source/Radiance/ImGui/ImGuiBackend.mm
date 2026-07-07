@@ -67,7 +67,7 @@ namespace Radiance
         io.ConfigDpiScaleFonts = true;          // [Experimental] Automatically overwrite style.FontScaleDpi in Begin() when Monitor DPI changes. This will scale fonts but _NOT_ scale sizes/padding for now.
         io.ConfigDpiScaleViewports = true;      // [Experimental] Scale Dear ImGui and Platform Windows when Monitor DPI changes.
 
-        io.Fonts->AddFontFromFileTTF("Radiance/Source/Radiance/Res/Fonts/Inter.ttf", 16.0f);
+        io.Fonts->AddFontFromFileTTF("Resources/Fonts/Inter.ttf", 16.0f);
 
         GLFWwindow *window = Application::Get()->GetMainWindow()->GetHandle();
         MTL::Device *device = Application::Get()->GetDevice();

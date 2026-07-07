@@ -6,6 +6,8 @@
 #include "Radiance/Core/LayerStack.h"
 #include "Radiance/Events/Event.h"
 #include "Radiance/ImGui/ImGuiBackend.h"
+#include "Radiance/Utils/FileSystem.h"
+#include "Radiance/Core/Log.h"
 
 #include <string>
 
@@ -48,8 +50,12 @@ namespace Radiance
         }
 
         std::shared_ptr<Window> GetMainWindow() const { return m_Window; }
-        MTL::Device* GetDevice() const { return m_Device; }
+        
+        MTL::Device* GetDevice() { return m_Device; }
+        const MTL::Device* GetDevice() const { return m_Device; }
+        
         MTL::CommandQueue* GetCommandQueue() const { return m_CommandQueue; }
+        
         static Application* Get();
         static float GetTime();
     private:
