@@ -18,7 +18,6 @@ namespace Radiance
 
     Log::~Log()
     {
-        delete s_Instance;
         s_Instance = nullptr;
     }
 
@@ -31,6 +30,11 @@ namespace Radiance
     {
         if (!s_Instance)
             s_Instance = new Log();
+    }
+
+    void Log::Shutdown()
+    {
+        delete s_Instance;
     }
 
 }

@@ -194,6 +194,7 @@ namespace Radiance
 
     void Application::Shutdown()
     {
+        Log::Shutdown();
     }
 
     Application* Application::Get()

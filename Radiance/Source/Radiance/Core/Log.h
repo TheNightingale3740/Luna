@@ -12,6 +12,7 @@ namespace Radiance
         ~Log();
 
         static void Init();
+        static void Shutdown();
         static Log& Get();
 
         std::shared_ptr<spdlog::logger>& GetLogger() { return m_AppLogger; }
